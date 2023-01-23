@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "camorph"
+version = "0.1.0"
+description = "Camorph is a python library for converting different camera parameter representations into each other"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["camera parameter convention", "conversion"]
+license = {text = "BSD 3-Clause License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "matplotlib>=3.5.0",
+    "numpy>=1.21.2",
+    "Pillow>=9.2.0",
+    "pyquaternion>=0.9.9",
+    "PyYAML>=6.0",
+    "rdflib>=6.1.1",
+]

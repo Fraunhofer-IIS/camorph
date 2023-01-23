@@ -1,0 +1,2 @@
+class FBXNode(dict):
+    pass
