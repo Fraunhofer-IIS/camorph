@@ -11,7 +11,7 @@ This is the gitlab project for camorph, a camera parameter converting tool writt
 
 ## Documentation
 
-Documentation will be made public shortly.
+Documentation can be found [here](docs/index.md).
 
 ## Quickstart
 
