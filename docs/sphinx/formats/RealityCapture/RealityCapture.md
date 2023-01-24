@@ -21,6 +21,7 @@ Yaw is measured clockwise. This means that yaw = 180 - yaw to correct
 for counterclockwise orientation.The resulting rotation matrix with $z$ = yaw = $\phi$,
 $y$ = pitch = $\theta$ and $x$ = roll = $\psi$
 *Reality Capture* uses internally:
+
 $$
 \begin{pmatrix}
 \cos{\psi}\cos{\phi} + \sin{\psi}\sin{\theta}\sin{\phi} & -\cos{\psi}\sin{\phi} + \cos{\phi}\sin{\psi}\sin{\theta} & -\cos{\theta}\sin{\psi} \\
