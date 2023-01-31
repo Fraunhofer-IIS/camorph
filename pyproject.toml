@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "camorph"
-version = "0.1.0"
+version = "0.1.1"
 description = "Camorph is a python library for converting different camera parameter representations into each other"
 readme = "README.md"
 requires-python = ">=3.8"

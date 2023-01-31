@@ -1,6 +1,7 @@
 import os
 import warnings
 from os.path import basename
+import copy
 
 from numpy import ndarray
 
@@ -151,14 +152,14 @@ class COLMAP(FileHandler):
             raise Exception(f"Unsupported file type: ${file_type}")
 
     def coordinate_into(self, camera_array):
-        cam_arr = camera_array.copy()
-        for cam in camera_array:
+        cam_arr = copy.deepcopy(camera_array)
+        for cam in cam_arr:
             cam.t, cam.r = math_utils.convert_coordinate_systems(['-y', '-z', 'x'], cam.t, cam.r, tdir=[0, 0, 1],
                                                                 tup=[0, -1, 0], transpose=True)
         return cam_arr
 
     def coordinate_from(self, camera_array):
-        cam_arr = camera_array.copy()
-        for cam in camera_array:
+        cam_arr = copy.deepcopy(camera_array)
+        for cam in cam_arr:
             cam.t, cam.r = math_utils.convert_coordinate_systems(['-y', '-z', 'x'], cam.t, cam.r, cdir=[0, 0, 1], cup = [0,-1,0])
         return cam_arr

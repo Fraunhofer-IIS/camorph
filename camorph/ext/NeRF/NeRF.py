@@ -1,3 +1,4 @@
+import copy
 import fnmatch
 import json
 import math
@@ -190,15 +191,15 @@ class NeRF(FileHandler):
             trans_mat[:-1, :-1] = cam.r.rotation_matrix
             trans_mat[:, -1][:-1] = cam.t
 
-            if not os.path.isabs(cam.source_image):
-                raise Exception("Camorph needs absolute image Paths. Relative paths are automatically calculated when saving to NeRF")
+            source_image = cam.source_image
 
-            # make source image path relative to source path
-            rel_image = os.path.relpath(cam.source_image,output_path)
+            if os.path.isabs(cam.source_image):
+                warnings.warn("Camorph needs absolute image Paths. Relative paths are automatically calculated when saving to NeRF")
+                source_image = os.path.relpath(source_image,output_path)
 
             json_cam = {
                 'intrinsics': {},
-                'file_path': rel_image,
+                'file_path': source_image,
                 'rotation': 0,
                 'transform_matrix': trans_mat.tolist()
             }
@@ -217,15 +218,15 @@ class NeRF(FileHandler):
             json.dump(json_file, f, indent=4)
 
     def coordinate_into(self, camera_array: list[Camera]):
-        cam_arr = camera_array.copy()
-        for cam in camera_array:
+        cam_arr = copy.deepcopy(camera_array)
+        for cam in cam_arr:
             cam.t, cam.r = math_utils.convert_coordinate_systems(['y', '-x', 'z'], cam.t, cam.r, cdir=[0, 0, -1],
                                                                  cup=[0, 1, 0], transpose=True)
         return cam_arr
 
     def coordinate_from(self, camera_array: list[Camera]):
-        cam_arr = camera_array.copy()
-        for cam in camera_array:
+        cam_arr = copy.deepcopy(camera_array)
+        for cam in cam_arr:
             cam.t, cam.r = math_utils.convert_coordinate_systems(['y', '-x', 'z'], cam.t, cam.r, cdir=[0, 0, -1],
                                                                  cup=[0, 1, 0])
         return cam_arr
