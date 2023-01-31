@@ -1,3 +1,4 @@
+import copy
 import math
 import re
 from os import listdir
@@ -125,7 +126,7 @@ class RealityCapture(FileHandler):
                 f.write(file)
 
     def coordinate_into(self, camera_array: list[Camera]):
-        cam_arr = camera_array.copy()
+        cam_arr = copy.deepcopy(camera_array)
         for cam in cam_arr:
             # Reality Capture stores the inverse
             cam.t, cam.r = math_utils.convert_coordinate_systems(['x', 'y', 'z'], cam.t, cam.r,
@@ -135,7 +136,7 @@ class RealityCapture(FileHandler):
         return cam_arr
 
     def coordinate_from(self, camera_array: list[Camera]):
-        cam_arr = camera_array.copy()
+        cam_arr = copy.deepcopy(camera_array)
         for cam in cam_arr:
             # Reality Capture stores the inverse
             cam.r = cam.r.inverse

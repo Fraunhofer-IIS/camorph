@@ -28,6 +28,10 @@ def read_cameras(format: str, *args, **kwargs) -> list[Camera]:
     cams = src_inst.read_file(*args, **kwargs)
     return cams
 
+def convert(format, cams):
+    dest_inst = camorph.imported_instances[format.lower()]
+    return dest_inst.coordinate_into(cams)
+
 def write_cameras(format, path, cams, crop=None, scale=None, imdir=None, check_images=False, file_type=None) -> None:
     """
     Write cameras of format `dest` to dest_path

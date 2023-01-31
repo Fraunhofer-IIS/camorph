@@ -1,3 +1,4 @@
+import copy
 import math
 import warnings
 
@@ -69,14 +70,14 @@ class Unity(FileHandler):
             f.write(file)
 
     def coordinate_into(self, camera_array):
-        cam_arr = camera_array.copy()
+        cam_arr = copy.deepcopy(camera_array)
         for cam in cam_arr:
             cam.t, cam.r = math_utils.convert_coordinate_systems(['y', 'z', '-x'], cam.t, cam.r, tdir=[0, 0, 1],
                                                                 tup=[0, 1, 0], transpose = True)
         return cam_arr
 
     def coordinate_from(self, camera_array):
-        cam_arr = camera_array.copy()
+        cam_arr = copy.deepcopy(camera_array)
         for cam in cam_arr:
             cam.t, cam.r = math_utils.convert_coordinate_systems(['y', 'z', '-x'], cam.t, cam.r, cdir=[0, 0, 1],
                                                                 cup=[0, 1, 0])

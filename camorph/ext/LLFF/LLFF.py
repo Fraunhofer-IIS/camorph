@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 import os
 from model.Camera import Camera
@@ -50,15 +52,15 @@ class LLFF(FileHandler):
 
 
     def coordinate_into(self, camera_array: list[Camera]):
-        cam_arr = camera_array.copy()
-        for cam in camera_array:
+        cam_arr = copy.deepcopy(camera_array)
+        for cam in cam_arr:
             cam.t, cam.r = math_utils.convert_coordinate_systems(['-x', '-z', 'y'], cam.t, cam.r, cdir=[0, 0, -1],
                                                                  cup=[-1, 0, 0],transpose=True)
         return cam_arr
 
     def coordinate_from(self, camera_array: list[Camera]):
-        cam_arr = camera_array.copy()
-        for cam in camera_array:
+        cam_arr = copy.deepcopy(camera_array)
+        for cam in cam_arr:
             cam.t, cam.r = math_utils.convert_coordinate_systems(['-x', '-z', 'y'], cam.t, cam.r, cdir=[0, 0, -1],
                                                                  cup=[-1, 0, 0])
         return cam_arr

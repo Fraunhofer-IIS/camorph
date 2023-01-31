@@ -1,7 +1,7 @@
 import warnings
 import json
 import csv
-from copy import copy
+import copy
 import numpy as np
 
 from model.FileHandler import FileHandler
@@ -56,7 +56,7 @@ class MPEG_OMAF(FileHandler):
                         tr = np.resize(np.asarray(row, dtype='float32'),[2,3])
                         t = tr[0]
                         r = tr[1][::-1]
-                        pc = copy(basecam)
+                        pc = copy.copy(basecam)
                         pc.t += t
                         pc.r = math_utils.euler_to_quaternion(r)
                         pc.name = f'posestrace_{str(idx).zfill(3)}'
@@ -106,15 +106,15 @@ class MPEG_OMAF(FileHandler):
             json.dump(json_file, f, indent=4)
 
     def coordinate_into(self, camera_array: list[Camera]):
-        cam_arr = camera_array.copy()
-        for cam in camera_array:
+        cam_arr = copy.deepcopy(camera_array)
+        for cam in cam_arr:
             cam.t, cam.r = math_utils.convert_coordinate_systems(['x', 'y', 'z'], cam.t, cam.r, tdir=[1, 0, 0],
                                                                 tup=[0, 0, 1])
         return cam_arr
 
     def coordinate_from(self, camera_array: list[Camera]):
-        cam_arr = camera_array.copy()
-        for cam in camera_array:
+        cam_arr = copy.deepcopy(camera_array)
+        for cam in cam_arr:
             cam.t, cam.r = math_utils.convert_coordinate_systems(['x', 'y', 'z'], cam.t, cam.r, cdir=[1, 0, 0],
                                                                 cup=[0, 0, 1])
         return cam_arr
