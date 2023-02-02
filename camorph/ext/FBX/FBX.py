@@ -102,14 +102,16 @@ class FBX(FileHandler):
                                   attributes['OpticalCenterY'][0].pvalue[0])
                 c.principal_point = ((c.resolution[0] / 2) + optical_center[0], (c.resolution[1] / 2) + optical_center[1])
             elif 'FrontPlaneOffsetX' in attributes and 'FrontPlaneOffsetY' in attributes:
-                c.lens_shift = (inch_to_mm(attributes['FrontPlaneOffsetX'][0].pvalue[0]/36),
-                                inch_to_mm(attributes['FrontPlaneOffsetY'][0].pvalue[0]/36))
+                c.lens_shift = (-inch_to_mm(attributes['FrontPlaneOffsetX'][0].pvalue[0]/c.sensor_size[0]),
+                                inch_to_mm(attributes['FrontPlaneOffsetY'][0].pvalue[0]/c.sensor_size[1]))
             elif 'FilmOffsetX' in attributes and 'FilmOffsetY' in attributes:
-                c.lens_shift = (inch_to_mm(attributes['FilmOffsetX'][0].pvalue[0]/36),
-                                inch_to_mm(attributes['FilmOffsetY'][0].pvalue[0]/36))
+                c.lens_shift = (inch_to_mm(attributes['FilmOffsetX'][0].pvalue[0]/c.sensor_size[0]),
+                                inch_to_mm(attributes['FilmOffsetY'][0].pvalue[0]/c.sensor_size[1]))
             else :
                 c.principal_point = (c.resolution[0]/2,c.resolution[1]/2)
 
+            if 'NearPlane' in attributes and 'FarPlane' in attributes:
+                c.near_far_bounds = (attributes['NearPlane'][0].pvalue[0]/100,attributes['FarPlane'][0].pvalue[0]/100)
 
             c.sensor_size = default_sensor_size if 'FilmWidth' not in attributes \
                 else (math_utils.inch_to_mm(attributes['FilmWidth'][0].pvalue[0]),

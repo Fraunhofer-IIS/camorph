@@ -194,33 +194,44 @@ def build_file(cams) -> bytes:
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('S', 'A'),
                                     FBXFileProperty('D', 0.0)])
-    n_8_4_2_1_8 = FBXFileNode('P', [FBXFileProperty('S', 'FilmOffsetX'),
+    n_8_4_2_1_10 = FBXFileNode('P', [FBXFileProperty('S', 'FilmOffsetX'),
                                     FBXFileProperty('S', 'Number'),
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('S', 'A'),
                                     FBXFileProperty('D', 0.0)])
-    n_8_4_2_1_9 = FBXFileNode('P', [FBXFileProperty('S', 'FilmOffsetY'),
+    n_8_4_2_1_11 = FBXFileNode('P', [FBXFileProperty('S', 'FilmOffsetY'),
                                     FBXFileProperty('S', 'Number'),
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('S', 'A'),
                                     FBXFileProperty('D', 0.0)])
-    n_8_4_2_1_10 = FBXFileNode('P', [FBXFileProperty('S', 'FilmWidth'),
+    n_8_4_2_1_12 = FBXFileNode('P', [FBXFileProperty('S', 'FilmWidth'),
                                     FBXFileProperty('S', 'Number'),
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('D', 0.816)])
-    n_8_4_2_1_11 = FBXFileNode('P', [FBXFileProperty('S', 'FilmHeight'),
+    n_8_4_2_1_13 = FBXFileNode('P', [FBXFileProperty('S', 'FilmHeight'),
                                     FBXFileProperty('S', 'Number'),
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('D', 0.612)])
-    n_8_4_2_1_12 = FBXFileNode('P', [FBXFileProperty('S', 'CameraProjectionType'),
+    n_8_4_2_1_14 = FBXFileNode('P', [FBXFileProperty('S', 'CameraProjectionType'),
                                     FBXFileProperty('S', 'enum'),
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('I', 0)])
+    n_8_4_2_1_15 = FBXFileNode('P', [FBXFileProperty('S', 'NearPlane'),
+                                     FBXFileProperty('S', 'double'),
+                                     FBXFileProperty('S', 'Number'),
+                                     FBXFileProperty('S', ''),
+                                     FBXFileProperty('D', 10.0)])
+    n_8_4_2_1_16 = FBXFileNode('P', [FBXFileProperty('S', 'FarPlane'),
+                                     FBXFileProperty('S', 'double'),
+                                     FBXFileProperty('S', 'Number'),
+                                     FBXFileProperty('S', ''),
+                                     FBXFileProperty('D', 100000.0)])
     n_8_4_2_1.nnested_nodes = [n_8_4_2_1_1, n_8_4_2_1_2, n_8_4_2_1_3, n_8_4_2_1_4, n_8_4_2_1_5, n_8_4_2_1_6,
-                               n_8_4_2_1_7, n_8_4_2_1_8, n_8_4_2_1_9, n_8_4_2_1_10, n_8_4_2_1_11, n_8_4_2_1_12]
+                               n_8_4_2_1_7, n_8_4_2_1_8, n_8_4_2_1_9, n_8_4_2_1_10, n_8_4_2_1_11, n_8_4_2_1_12,
+                               n_8_4_2_1_13,n_8_4_2_1_14,n_8_4_2_1_15,n_8_4_2_1_16]
     n_8_5 = FBXFileNode('ObjectType', [FBXFileProperty('S', 'Model')])
     n_8_5_1 = FBXFileNode('Count', [FBXFileProperty('I', len(cams))])
     n_8_5_2 = FBXFileNode('PropertyTemplate', [FBXFileProperty('S', "FbxNode")])
@@ -358,7 +369,22 @@ def build_camera_property_node(cam: Camera, uid:int):
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('S', 'A'),
                                     FBXFileProperty('D', mu.mm_to_inch(cam.lens_shift[1] * 36))])
-    n_1_1.nnested_nodes = [n_1_1_1, n_1_1_2, n_1_1_3, n_1_1_4, n_1_1_5, n_1_1_6, n_1_1_7, n_1_1_8, n_1_1_9]
+    if cam.near_far_bounds is not None and None not in cam.near_far_bounds:
+        near_far_bounds = (cam.near_far_bounds[0] * 100, cam.near_far_bounds[1]*100)
+    else:
+        near_far_bounds = (10.0,100000.0)
+    n_1_1_10 = FBXFileNode('P', [FBXFileProperty('S', 'NearPlane'),
+                                    FBXFileProperty('S', 'double'),
+                                    FBXFileProperty('S', 'Number'),
+                                    FBXFileProperty('S', ''),
+                                    FBXFileProperty('D', near_far_bounds[0])])
+    n_1_1_11 = FBXFileNode('P', [FBXFileProperty('S', 'FarPlane'),
+                                    FBXFileProperty('S', 'double'),
+                                    FBXFileProperty('S', 'Number'),
+                                    FBXFileProperty('S', ''),
+                                    FBXFileProperty('D', near_far_bounds[1])])
+    n_1_1.nnested_nodes = [n_1_1_1, n_1_1_2, n_1_1_3, n_1_1_4, n_1_1_5, n_1_1_6, n_1_1_7, n_1_1_8, n_1_1_9,
+                           n_1_1_10,n_1_1_11]
     n_1_2 = FBXFileNode('TypeFlags', [FBXFileProperty('S', 'Camera')])
     n_1_3 = FBXFileNode('GeometryVersion', [FBXFileProperty('I', 124)])
     n_1_4 = FBXFileNode('Position', [FBXFileProperty('D', cam.t[0] * 100),

@@ -1,10 +1,11 @@
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
-
+[tool.setuptools.packages.find]
+exclude=["thirdPartyLegalNotices"]
 [project]
 name = "camorph"
-version = "0.1.1"
+version = "0.1.2"
 description = "Camorph is a python library for converting different camera parameter representations into each other"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -21,3 +22,5 @@ dependencies = [
     "PyYAML>=6.0",
     "rdflib>=6.1.1",
 ]
+[project.scripts]
+camorph = "camorph.cli:run"
