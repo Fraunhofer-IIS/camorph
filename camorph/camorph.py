@@ -7,7 +7,7 @@ import sys
 import PIL.Image
 
 import camorph
-import crucial_property as cp
+import lib.crucial_property as cp
 from model import Camera
 import visualizer as vis
 
@@ -54,7 +54,7 @@ def write_cameras(format, path, cams, crop=None, scale=None, imdir=None, check_i
         folder = (os.path.sep).join(splitpath[:-1])
     else:
         folder = path
-    if not os.path.isdir(folder):
+    if not os.path.isdir(folder) and folder != '':
         os.mkdir(folder)
 
     dest_inst = camorph.imported_instances[format.lower()]

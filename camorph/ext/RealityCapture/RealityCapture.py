@@ -62,9 +62,11 @@ class RealityCapture(FileHandler):
                 mat = np.asarray([float(x) for x in cam_data['Rotation'].value.split(' ')]).reshape(3, 3)
                 cam.r = Quaternion(matrix=mat)
                 cam.model = cam_data['DistortionModel'].value
-                cam.sensor_size = (36, 24)
+                cam.sensor_size = (36, 36 * cam.resolution[1]/cam.resolution[0])
                 cam.focal_length_mm = [float(cam_data['FocalLength35mm'].value),float(cam_data['FocalLength35mm'].value)]
-                cam.lens_shift = (float(cam_data['PrincipalPointU'].value), float(cam_data['PrincipalPointV'].value))
+                lens_shift = [float(cam_data['PrincipalPointU'].value), float(cam_data['PrincipalPointV'].value)]
+                lens_shift[1] = (lens_shift[1]*36) / cam.sensor_size[1]
+                cam.lens_shift = tuple(lens_shift)
                 distortion_coeffs = [float(x) for x in cam_data['DistortionCoeficients'].value.split(' ')]
                 if cam.model == 'brown3':
                     cam.model = 'brown'
@@ -106,12 +108,17 @@ class RealityCapture(FileHandler):
 
             dist_coeffs = file_utils.fixed_list(cam.radial_distortion, 4, float)
             dist_coeffs.extend(file_utils.fixed_list(cam.tangential_distortion, 2, float))
+
+            midpoints = (cam.resolution[0]/2, cam.resolution[1]/2)
+            npp = (cam.principal_point[0] - midpoints[0],cam.principal_point[1] - midpoints[1])
+            lens_shift = (npp[0]/cam.resolution[0], npp[1]/cam.resolution[0])
+            #lens_shift = (cam.principal_point[0]/cam.resolution[0] * 35, cam.principal_point[1]/cam.resolution[1] * 35)
             file = f"""<x:xmpmeta xmlns:x="adobe:ns:meta/">
                       <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
                         <rdf:Description xcr:Version="3" xcr:PosePrior="locked" xcr:Coordinates="absolute"
                            xcr:DistortionModel="{dist_model}" xcr:FocalLength35mm="{cam.focal_length_mm[0]}"
-                           xcr:Skew="0" xcr:AspectRatio="1" xcr:PrincipalPointU="{cam.lens_shift[0]}"
-                           xcr:PrincipalPointV="{cam.lens_shift[1]}" xcr:CalibrationPrior="exact"
+                           xcr:Skew="0" xcr:AspectRatio="1" xcr:PrincipalPointU="{lens_shift[0]}"
+                           xcr:PrincipalPointV="{lens_shift[1]}" xcr:CalibrationPrior="exact"
                            xcr:CalibrationGroup="-1" xcr:DistortionGroup="-1" xcr:InTexturing="1"
                            xcr:InMeshing="1" xmlns:xcr="http://www.capturingreality.com/ns/xcr/1.1#">
                           <xcr:Rotation>{' '.join([str(x) for x in cam.r.rotation_matrix.flat])}</xcr:Rotation>
