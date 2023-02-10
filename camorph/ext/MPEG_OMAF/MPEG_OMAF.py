@@ -60,6 +60,9 @@ class MPEG_OMAF(FileHandler):
                         pc.t += t
                         pc.r = math_utils.euler_to_quaternion(r)
                         pc.name = f'posestrace_{str(idx).zfill(3)}'
+
+                        if pc.source_image is None and 'posetrace' in kwargs and kwargs['posetrace']:
+                            pc.source_image = pc.name
                         posetrace_array.append(pc)
                 return self.coordinate_from(posetrace_array)
 

@@ -95,6 +95,10 @@ class FBX(FileHandler):
             c.resolution = default_resolution if 'AspectWidth' not in attributes \
                 else (attributes['AspectWidth'][0].pvalue[0], attributes['AspectHeight'][0].pvalue[0])
 
+            c.sensor_size = default_sensor_size if 'FilmWidth' not in attributes \
+                else (math_utils.inch_to_mm(attributes['FilmWidth'][0].pvalue[0]),
+                      math_utils.inch_to_mm(attributes['FilmHeight'][0].pvalue[0]))
+
             # principal_point
             optical_center = default_optical_center
             if 'OpticalCenterX' in attributes:
@@ -112,10 +116,6 @@ class FBX(FileHandler):
 
             if 'NearPlane' in attributes and 'FarPlane' in attributes:
                 c.near_far_bounds = (attributes['NearPlane'][0].pvalue[0]/100,attributes['FarPlane'][0].pvalue[0]/100)
-
-            c.sensor_size = default_sensor_size if 'FilmWidth' not in attributes \
-                else (math_utils.inch_to_mm(attributes['FilmWidth'][0].pvalue[0]),
-                      math_utils.inch_to_mm(attributes['FilmHeight'][0].pvalue[0]))
 
             if abs(c.sensor_size[0]/c.sensor_size[1] - c.resolution[0]/c.resolution[1]) > 0.001:
                 warnings.warn("Sensor size aspect ratio did not match resolution aspect ratio (default blender behaviour),"
