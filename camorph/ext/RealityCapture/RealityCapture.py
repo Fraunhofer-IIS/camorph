@@ -77,11 +77,13 @@ class RealityCapture(FileHandler):
                 elif cam.model == 'brown3t2':
                     cam.model = 'brown'
                     cam.radial_distortion = distortion_coeffs[:3]
-                    cam.tangential_distortion = distortion_coeffs[4:]
+                    # Tangential components swapped (OpenCV vs Wiki)
+                    cam.tangential_distortion = distortion_coeffs[:4-1:-1]
                 elif cam.model == 'brown4t2':
                     cam.model = 'brown'
                     cam.radial_distortion = distortion_coeffs[:4]
-                    cam.tangential_distortion = distortion_coeffs[4:]
+                    # Tangential components swapped (OpenCV vs Wiki)
+                    cam.tangential_distortion = distortion_coeffs[:4-1:-1]
                 elif cam.model == 'division':
                     cam.radial_distortion = distortion_coeffs[0]
                 cams.append(cam)
@@ -107,7 +109,7 @@ class RealityCapture(FileHandler):
                 dist_model = 'division'
 
             dist_coeffs = file_utils.fixed_list(cam.radial_distortion, 4, float)
-            dist_coeffs.extend(file_utils.fixed_list(cam.tangential_distortion, 2, float))
+            dist_coeffs.extend(file_utils.fixed_list(cam.tangential_distortion[::-1], 2, float))
 
             midpoints = (cam.resolution[0]/2, cam.resolution[1]/2)
             npp = (cam.principal_point[0] - midpoints[0],cam.principal_point[1] - midpoints[1])
