@@ -43,6 +43,13 @@ class MPEG_OMAF(FileHandler):
                 else:
                     cam.focal_length_px = [cam.resolution[0] / 2,cam.resolution[0] / 2]
                     cam.principal_point = [x / 2 for x in cam.resolution]
+
+                if cam.resolution is not None:
+                    if cam.resolution[0] > cam.resolution[1]:
+                        cam.sensor_size = (36, (36 / cam.resolution[0]) * cam.resolution[1])
+                    else:
+                        cam.sensor_size = ((36 / cam.resolution[1]) * cam.resolution[0], 36)
+                
                 cam_arr.append(cam)
             if len(args) == 1 and type(args[0]) == str and args[0].split('.')[-1] == 'csv':
                 basecam = next((c for c in cam_arr if c.name == 'viewport'), None)
@@ -91,7 +98,7 @@ class MPEG_OMAF(FileHandler):
             json_cam = {
                 'Name': cam.name,
                 'Position': [float(x) for x in cam.t],
-                'Rotation': [float(x) for x in math_utils.quaternion_to_euler(cam.r)],
+                'Rotation': [float(x) for x in math_utils.quaternion_to_euler(cam.r)[::-1]],
                 'Depthmap': 1,
                 'Background': 0,
                 'Depth_range': [40.0,70.0],

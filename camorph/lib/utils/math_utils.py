@@ -14,7 +14,7 @@ from pyquaternion import Quaternion
 
 
 def euler_to_quaternion(vec, rot_order='xyz'):
-    """This function converts a set of euler angles to a quaternion.
+    """This function converts a set of Euler angles to a quaternion.
 
 
         :param vec: Vector as xyz
@@ -32,7 +32,7 @@ def euler_to_quaternion(vec, rot_order='xyz'):
 
 
 def quaternion_to_euler(q, rot_order='xyz'):
-    """This function converts a quaternion of euler angles to a quaternion.
+    """This function converts a quaternion to a set of Euler angles.
 
 
         :param q: Quaternion

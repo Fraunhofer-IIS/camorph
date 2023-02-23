@@ -195,7 +195,11 @@ class NeRF(FileHandler):
 
             if os.path.isabs(cam.source_image):
                 warnings.warn("Camorph needs absolute image Paths. Relative paths are automatically calculated when saving to NeRF")
-                source_image = os.path.relpath(source_image,output_path)
+                tmp_output_path = output_path
+                if not os.path.isdir(tmp_output_path):
+                    tmp_output_path = os.path.split(output_path)[0]
+
+                source_image = os.path.relpath(source_image,tmp_output_path)
 
             json_cam = {
                 'intrinsics': {},

@@ -1,21 +1,17 @@
 @echo off
 
 :: Modify Camorph parameters here
-SET inputType=fbx
-SET inputFolder=YourInputFolder
-SET input=YourInputFile.extension
+:: Possible format types: fbx, colmap, unity, nerf, reality_capture, mpeg_omaf
+SET inputType=colmap
+SET inputFolder=\\path\to\your\input
+SET input=%inputFolder%
 
-SET outputType1=reality_capture
-::SET outputType2=colmap
+SET outputType=nerf
 SET outputFolder=%inputFolder%
-SET output1=%outputFolder%\YourOutputFolder
-::SET output2=%outputFolder%\CamorphCOLMAP
+SET output=%outputFolder%\CamorphJSON\transforms.json
 
  
-:: First Camorph output
-python -m camorph -if %inputType% -i "%input%" -of %outputType1% -o "%output1%"
-
-
-:: Second Camorph output
-::python -m camorph -if %inputType% -i "%input%" -of %outputType2% -o "%output2%"
+:: Camorph output
+:: Additional arguments: -ft (for colmap to switch between txt and bin), -pt (for pose traces)
+python -m camorph -if %inputType% -i "%input%" -of %outputType% -o "%output%"
 

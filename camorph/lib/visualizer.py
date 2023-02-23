@@ -23,8 +23,8 @@ def visualize(cams: list[Camera]):
     upx, upy, upz = zip(*[x.r.rotate(up) for x in cams])
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.quiver(x, y, z, dirx, diry, dirz, color='r')
-    ax.quiver(x, y, z, upx, upy, upz, color='g')
+    ax.quiver(x, y, z, dirx, diry, dirz, color='r', label='Camera Front')
+    ax.quiver(x, y, z, upx, upy, upz, color='g', label='Camera Up')
 
     ax.set_xlim([-maxdist, maxdist])
     ax.set_ylim([-maxdist, maxdist])
@@ -34,5 +34,7 @@ def visualize(cams: list[Camera]):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
+
+    ax.legend()
 
     plt.show()
