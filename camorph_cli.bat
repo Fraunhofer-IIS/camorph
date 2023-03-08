@@ -1,7 +1,7 @@
 @echo off
 
 :: Modify Camorph parameters here
-:: Possible format types: fbx, colmap, unity, nerf, reality_capture, mpeg_omaf
+:: Possible format types: fbx, colmap, unity, nerf, reality_capture, mpeg_omaf, llff
 SET inputType=colmap
 SET inputFolder=\\path\to\your\input
 SET input=%inputFolder%

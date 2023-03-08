@@ -121,7 +121,7 @@ def _get_model_and_params(cam, file_type, func):
         if len(cam.radial_distortion) == 1 and (cam.tangential_distortion is None or (cam.tangential_distortion) == 0):
             camtype = "SIMPLE_RADIAL" if file_type == 'txt' else 2
             params = [func(cam.focal_length_px[0]), func(cam.principal_point[0]),
-                      func(cam.principal_point[1]), func(cam.radial_distortion)]
+                      func(cam.principal_point[1]), func(cam.radial_distortion[0])]
         elif len(cam.radial_distortion) == 2 and (cam.tangential_distortion is None or (cam.tangential_distortion) == 0):
             camtype = "RADIAL" if file_type == 'txt' else 3
             params = [func(cam.focal_length_px[0]), func(cam.principal_point[0]), func(cam.principal_point[1]),
@@ -155,7 +155,7 @@ def _get_model_and_params(cam, file_type, func):
         if len(cam.radial_distortion) == 1:
             camtype = "SIMPLE_RADIAL_FISHEYE" if file_type == 'txt' else 8
             params = [func(cam.focal_length_px[0]), func(cam.principal_point[0]), func(cam.principal_point[1]),
-                      func(cam.radial_distortion)]
+                      func(cam.radial_distortion[0])]
         elif len(cam.radial_distortion) == 2:
             camtype = "RADIAL_FISHEYE" if file_type == 'txt' else 9
             params = [func(cam.focal_length_px[0]), func(cam.principal_point[0]), func(cam.principal_point[1]),
