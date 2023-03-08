@@ -109,7 +109,10 @@ class RealityCapture(FileHandler):
                 dist_model = 'division'
 
             dist_coeffs = file_utils.fixed_list(cam.radial_distortion, 4, float)
-            dist_coeffs.extend(file_utils.fixed_list(cam.tangential_distortion[::-1], 2, float))
+            if cam.tangential_distortion is not None:
+                dist_coeffs.extend(file_utils.fixed_list(cam.tangential_distortion[::-1], 2, float))
+            else:
+                dist_coeffs.extend([0.0, 0.0])
 
             midpoints = (cam.resolution[0]/2, cam.resolution[1]/2)
             npp = (cam.principal_point[0] - midpoints[0],cam.principal_point[1] - midpoints[1])
