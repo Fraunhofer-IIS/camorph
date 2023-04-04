@@ -359,16 +359,20 @@ def build_camera_property_node(cam: Camera, uid:int):
                                 FBXFileProperty('S', ''),
                                 FBXFileProperty('D', focal_length)])
     # principal point
+    if cam.lens_shift is not None:
+        lens_shift = cam.lens_shift
+    else:
+        lens_shift = (0.0, 0.0)
     n_1_1_8 = FBXFileNode('P', [FBXFileProperty('S', 'FilmOffsetX'),
                                     FBXFileProperty('S', 'Number'),
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('S', 'A'),
-                                    FBXFileProperty('D', mu.mm_to_inch(cam.lens_shift[0] * 36))])
+                                    FBXFileProperty('D', mu.mm_to_inch(lens_shift[0] * 36))])
     n_1_1_9 = FBXFileNode('P', [FBXFileProperty('S', 'FilmOffsetY'),
                                     FBXFileProperty('S', 'Number'),
                                     FBXFileProperty('S', ''),
                                     FBXFileProperty('S', 'A'),
-                                    FBXFileProperty('D', mu.mm_to_inch(cam.lens_shift[1] * 36))])
+                                    FBXFileProperty('D', mu.mm_to_inch(lens_shift[1] * 36))])
     if cam.near_far_bounds is not None and None not in cam.near_far_bounds:
         near_far_bounds = (cam.near_far_bounds[0] * 100, cam.near_far_bounds[1]*100)
     else:
