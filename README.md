@@ -15,13 +15,25 @@ Documentation can be found [here](docs/index.md).
 
 ## Quickstart
 
-Install the conda environment by running
+Some quick tips on how to use camorph.
+
+### Installation
+
+If you want to work on camorph, clone the repo and install the conda environment by running
 
 ```
 conda env create -f camorph_win.yml
 ```
 
-Then use the library to convert camera parameter representations:
+Otherwise, you can also install camorph with pip
+
+```
+pip install git+https://github.com/Fraunhofer-IIS/camorph
+```
+
+### Usage as Python Library
+
+Use the library to convert camera parameter representations:
 
 ```
 import camorph.camorph as camorph
@@ -40,24 +52,87 @@ camorph.write_cameras('fbx', r'\\path\to\file.fbx', cams)
 
 ``camorph.write_cameras()`` takes a format name, a path as a string and a list of cameras and writes the output file(s) to the specified path.
 
-**Currently supported formats:**
+### Usage as CLI
+
+You can use the command line interface by calling
+```
+python -m camorph -h
+```
+or when installed with pip
+```
+camorph -h
+```
+This will output the help for the command line interface
+
+```
+usage: camorph [-h] -i input_path [input_path ...] -if input_format [-o output_path] [-of output_format] [-v]
+               [-c config] [-ft file_type] [-pt] [-cr crop] [-s scale] [-id image_dir] [-ci]
+
+Convert Cameras from different formats to each other
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i input_path [input_path ...], --input input_path [input_path ...]
+                        the input path of the camera file(s) to read
+  -if input_format, --input_format input_format
+                        the format of the input camera file(s)
+  -o output_path, --output output_path
+                        the output path where the camera file(s) should be saved
+  -of output_format, --output_format output_format
+                        the format of the output camera file(s)
+  -v, --visualize       when this parameter is present, the cameras will be visualized.
+  -c config, --config config
+                        the path to a config.json file for missing crucial properties
+  -ft file_type, --file_type file_type
+                        some formats support different types of output files, for example bin for binary and txt for
+                        ascii files
+  -pt, --posetrace      treat the input as a posetrace and ignore any source images.
+  -cr crop, --crop crop
+                        crop source image attributes by the specified top left and bottom right corner. Format:
+                        "leftcorner_x,leftcorner_y,rightcorner_x,rightcorner_y". ATTENTION: THIS DOES NOT MODIFY THE IMAGES, ONLY THE PROPERTIES IN THE FILE!
+  -s scale, --scale scale
+                        scale source image attributes by the specified factor. ATTENTION: THIS DOES NOT MODIFY THE IMAGES, ONLY THE PROPERTIES IN THE FILE!
+  -id image_dir, --image-dir image_dir
+                        replace the directory for the source images with this.
+  -ci, --check-images   check if images exist and are of the right resolution.
+```
+
+For example
+
+```
+camorph -i \path\to\json -if nerf -o \path\to\output -of fbx
+```
+
+### Crucial Properties
+If there are missing crucial properties, camorph will automatically create a `config.json` in the target folder.
+To edit this file, please refer to the ["Crucial Properties" section of the documentation](docs/sphinx/crucial_properties.md)
+
+### Pose Trace
+If you want to convert a camera animation, which does not have source images (sometimes also referred to as *pose trace*), you can add the `-pt` argument to ignore any source image requirements.
+
+### Cropping and Scaling
+This option crops and scales the **attributes of images in the file**. For example, colmap stores the resolution of the images, which can be modified by this parameter.
+> ❗❗❗ **THIS DOES NOT MODIFY THE IMAGES THEMSELVES!** ❗❗❗
+
+## Currently Supported Formats
 
 - Computer Graphics
-   - FBX
+   - **FBX** (Key: "fbx")
 
 - Photogrammetry
-   - COLMAP
-   - Meshroom
-   - Reality Capture
+   - **COLMAP** (Key: "colmap")
+   - **Meshroom** (Key: "meshroom")
+   - **Reality Capture** (Key: "reality_capture")
+   - **Local Light Field Fusion** (Key: "llff")
 
 - Game Engines
-   - Unity
+   - **Unity** (Key: "unity")
 
 - Virtual Reality
-   - MPEG OMAF
+   - **MPEG OMAF** (Key: "mpeg_omaf")
 
 - Machine Learning
-   - NeRF
+   - **NeRF** (Key: "fbx")
 
 ## Citation 
 
