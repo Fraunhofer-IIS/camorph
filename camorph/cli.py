@@ -23,9 +23,9 @@ def run():
     argparser.add_argument('-pt', '--posetrace', action='store_true',
                            help='treat the input as a posetrace and ignore any source images.')
     argparser.add_argument('-cr', '--crop',metavar='crop', type=str, default=None,
-                           help='crop source images by the specified top left and bottom right corner. Format: \"leftcorner_x,leftcorner_y,rightcorner_x,rightcorner_y\".')
+                           help='crop source image attributes by the specified top left and bottom right corner. Format: \"leftcorner_x,leftcorner_y,rightcorner_x,rightcorner_y\". ATTENTION: THIS DOES NOT MODIFY THE IMAGES, ONLY THE PROPERTIES IN THE FILE!')
     argparser.add_argument('-s', '--scale',metavar='scale', type=float, default=None,
-                           help='scale source images by the specified factor.')
+                           help='scale source image attributes by the specified factor. ATTENTION: THIS DOES NOT MODIFY THE IMAGES, ONLY THE PROPERTIES IN THE FILE!')
     argparser.add_argument('-id','--image-dir',metavar='image_dir', type=str,
                            help='replace the directory for the source images with this.')
     argparser.add_argument('-ci','--check-images',dest='check_images', action='store_true',
