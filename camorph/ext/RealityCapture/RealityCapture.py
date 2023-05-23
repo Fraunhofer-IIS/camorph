@@ -133,7 +133,12 @@ class RealityCapture(FileHandler):
                       </rdf:RDF>
 </x:xmpmeta>
                     """
-            target_path = output_path + cam.source_image[cam.source_image.rfind('\\'):cam.source_image.rfind('.')] + '.xmp'
+            if '\\' in cam.source_image:
+                sl = '\\'
+            else:
+                sl = '/'
+            
+            target_path = output_path + cam.source_image[cam.source_image.rfind(sl):cam.source_image.rfind('.')] + '.xmp'
             with open(target_path, 'w') as f:
                 f.write(file)
 

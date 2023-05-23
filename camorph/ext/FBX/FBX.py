@@ -30,12 +30,6 @@ class FBX(FileHandler):
         return 1
 
     def read_file(self, input_path, **kwargs):
-        #self.read_file_debug(input_path)
-        #path = r'\\netapp01\bt\Orga\Mitarbeiter\brandbn\BA\02_Research\Formats\fbx\FBX_highres_obj.txt'
-        #file = '\n'.join(self.debug_text)
-        #with open(path, 'w') as f:
-        #    f.write(file)
-        #sys.exit(1)
         fbx_obj = FBXNode()
         file_size = os.path.getsize(input_path)
         with open(input_path, mode='rb') as f:
