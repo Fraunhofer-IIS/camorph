@@ -34,11 +34,11 @@ Example images ASCII file:
 
     imageId, qw, qx, qy, qz, tx, ty, tz, cameraId, name
     points2d[] as (x,y,pointid)
-    1 0.9238795391929062 0.38268341623423263 -0.0 -0.0 -5.041089999999998 1.2708298199999997 1.4063895899999999 1 \\netapp01\bt\Orga\Mitarbeiter\brandbn\BA\02_Research\Formats\COLMAP_txt\source_images\view1.png
+    1 0.9238795391929062 0.38268341623423263 -0.0 -0.0 -5.041089999999998 1.2708298199999997 1.4063895899999999 1 view1.png
     0 0 0 0 0 0 0 0 0
-    2 0.7071067811865475 -0.0 0.7071067811865475 -0.0 0.0506335 1.94183 0.594955 2 \\netapp01\bt\Orga\Mitarbeiter\brandbn\BA\02_Research\Formats\COLMAP_txt\source_images\view1.png
+    2 0.7071067811865475 -0.0 0.7071067811865475 -0.0 0.0506335 1.94183 0.594955 2 view1.png
     0 0 0 0 0 0 0 0 0
-    3 0.9238795391929062 -0.0 -0.0 -0.38268341623423263 -3.779291409999999 3.3067953399999994 0.042054899999999985 3 \\netapp01\bt\Orga\Mitarbeiter\brandbn\BA\02_Research\Formats\COLMAP_txt\source_images\view1.png
+    3 0.9238795391929062 -0.0 -0.0 -0.38268341623423263 -3.779291409999999 3.3067953399999994 0.042054899999999985 3 view1.png
     0 0 0 0 0 0 0 0 0
 
 Note that the rotation :math:`R` and the translation :math:`t` are given by:
