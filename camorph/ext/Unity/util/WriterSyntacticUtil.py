@@ -1,4 +1,4 @@
-import random
+import itertools
 import re
 
 import yaml
@@ -15,10 +15,11 @@ def build_file(cam_array: list[Camera]):
     out_cams = []
     out_transforms = []
     out_txt = "%YAML 1.1\n%TAG !u! tag:unity3d.com,2011:\n"
+    id_gen = itertools.count(1)
     for cam in cam_array:
-        gid = random.randint(1, 65535)
-        cid = random.randint(1, 65535)
-        tid = random.randint(1, 65535)
+        gid = next(id_gen)
+        cid = next(id_gen)
+        tid = next(id_gen)
         u_game_obj = UnityGameObject(gid, cid, tid, cam.name)
         u_cam = UnityCamera(cid, gid, cam.focal_length_mm[0], cam.sensor_size, float(np.degrees(cam.fov[0])), cam.projection_type)
         u_transform = UnityTransform(cam.t, cam.r, tid, gid)
