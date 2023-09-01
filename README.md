@@ -132,7 +132,7 @@ This option crops and scales the **attributes of images in the file**. For examp
    - **MPEG OMAF** (Key: "mpeg_omaf")
 
 - Machine Learning
-   - **NeRF** (Key: "fbx")
+   - **NeRF** (Key: "nerf")
 
 ## Citation 
 

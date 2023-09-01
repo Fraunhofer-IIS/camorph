@@ -5,6 +5,7 @@ This module provides the main conversion methods.
 import os
 import sys
 import PIL.Image
+import copy
 
 import camorph
 import lib.crucial_property as cp
@@ -112,7 +113,10 @@ def write_cameras(format, path, cams, crop=None, scale=None, imdir=None, check_i
             if not (im.height == cam.resolution[0] and im.width == cam.resolution[1]) and not (im.height == cam.resolution[1] and im.width == cam.resolution[0]):
                 raise ValueError(f"Resolution of image and intrinsics does not match: image {im.height}x{im.width}, intrinsic {cam.resolution[0]}x{cam.resolution[1]}")
 
-    dest_inst.write_file(cams, path, file_type)
+    # do not modify the source array
+    cam_copy = copy.deepcopy(cams)
+
+    dest_inst.write_file(cam_copy, path, file_type)
 
 def write_crucial_config_template(cams, path):
     """

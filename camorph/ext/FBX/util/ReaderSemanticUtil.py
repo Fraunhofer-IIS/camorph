@@ -34,19 +34,25 @@ def resolve_hierarchy(parent, transforms):
         obj = child.object[0]
         if obj is not None and obj.name == 'Model':
             properties70 = obj.Properties70[0]
+
+            # Translation
+            translation = np.array([0.0, 0.0, 0.0])
             if 'Lcl Translation' in properties70:
-                translation = np.array(properties70['Lcl Translation'][0].pvalue)
-            else:
-                translation = np.array([0, 0, 0])
+                translation += np.array(properties70['Lcl Translation'][0].pvalue)
+
+            # Rotation
+            rotation = np.identity(3)
+            if 'PreRotation' in properties70:
+                rotation = rotation @ math_utils.euler_to_rotation_matrix(
+                    [np.radians(x) for x in properties70['PreRotation'][0].pvalue])
             if 'Lcl Rotation' in properties70:
-                rotation = math_utils.euler_to_rotation_matrix(
+                rotation = rotation @ math_utils.euler_to_rotation_matrix(
                     [np.radians(x) for x in properties70['Lcl Rotation'][0].pvalue])
-            else:
-                rotation = np.identity(3)
+
+            # Scale
+            scale = np.array([1.0,1.0,1.0])
             if 'Lcl Scaling' in properties70:
-                scale = np.array(properties70['Lcl Scaling'][0].pvalue)
-            else:
-                scale = np.array([1, 1, 1])
+                scale *= np.array(properties70['Lcl Scaling'][0].pvalue)
 
             # get parent transforms
             parent_translation = transforms[parent.id][2]

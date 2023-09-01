@@ -1,11 +1,13 @@
 from argparse import ArgumentParser
 
 import camorph.camorph as camorph
+import importlib.metadata
 import sys
 
-def run():
+def run(run_as_module=False):
     argparser = ArgumentParser(description='Convert Cameras from different formats to each other')
-
+    if not run_as_module:
+        argparser.add_argument('--version', action='version', version=f'{importlib.metadata.version("camorph")}')
     argparser.add_argument('-i', '--input', metavar='input_path', nargs="+", type=str, required=True,
                            help='the input path of the camera file(s) to read')
     argparser.add_argument('-if', '--input_format', metavar='input_format', type=str, required=True,

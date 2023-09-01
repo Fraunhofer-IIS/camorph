@@ -39,7 +39,7 @@ def read_sfm(input_path):
                     cam.radial_distortion = [float(x) for x in intrinsic['distortionParams']]
                 else:
                     cam.model = 'pinhole'
-                cam.source_image = re.sub('/', os.path.sep, view['path'])
+                cam.source_image = view['path']
                 cams.append(cam)
 
     return cams

@@ -86,6 +86,8 @@ class RealityCapture(FileHandler):
                     cam.tangential_distortion = distortion_coeffs[:4-1:-1]
                 elif cam.model == 'division':
                     cam.radial_distortion = distortion_coeffs[0]
+                elif cam.model == 'perspective':
+                    cam.model = 'pinhole'
                 cams.append(cam)
         return self.coordinate_from(cams)
 

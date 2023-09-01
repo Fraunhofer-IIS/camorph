@@ -14,7 +14,7 @@ class UnityCamera(yaml.YAMLObject):
         self.serializedVersion = 2
         self.m_ClearFlags = 2
         self.m_BackGroundColor = dict(r=0.19215687, g=0.3019608, b=0.4745098, a=0)
-        self.m_projectionMatrixMode = 1
+        self.m_projectionMatrixMode = 2
         self.m_GateFitMode = 2
         self.m_FOVAxisMode = 1
         self.m_SensorSize = dict(x=float(sensor_size[0]), y=float(sensor_size[1]))
