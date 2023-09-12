@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-def visualize(cams: list[Camera]):
+def visualize(cams: list[Camera], show=True):
     """
     This function takes a list of camorph cameras and visualizes them with matplotlib
 
@@ -36,5 +36,7 @@ def visualize(cams: list[Camera]):
     ax.set_zlabel('Z')
 
     ax.legend()
-
-    plt.show()
+    if show:
+        plt.show()
+    else:
+        return fig

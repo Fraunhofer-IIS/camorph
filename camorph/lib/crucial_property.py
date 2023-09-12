@@ -49,15 +49,21 @@ def pip_check_properties(inst: FileHandler, cams: list[Camera], crucial_property
                     regex = cpc['global'][prop + '_path']['filter']
                 else:
                     regex = '.*'
-                files = [f for f in os.listdir(p) if bool(re.match(regex, basename(f)))]
-
+                files = [os.path.relpath(os.path.join(p,f),os.path.dirname(dest_path)) for f in os.listdir(p) if bool(re.match(regex, basename(f)))]
+                # os.listdir() returns random order when path is a network path
+                files = sorted(files)
+                
                 unmatched_files = []
                 for file in files:
                     # match files according to camera names
                     filename = basename(file)
-                    found_cam = next(
-                        (cam for cam in cams if (cam.name[:cam.name.rfind('.')] == filename[:filename.rfind('.')] if '.' in cam.name else cam.name == filename[:filename.rfind('.')])),
-                        None)
+                    try:
+                        found_cam = next(
+                            (cam for cam in cams if (cam.name[:cam.name.rfind('.')] == filename[:filename.rfind('.')] if '.' in cam.name else cam.name == filename[:filename.rfind('.')])),
+                            None)
+                    except TypeError:
+                        # cam.name is None and cant be iterated
+                        found_cam = None
                     if found_cam is not None and hasattr(found_cam,prop) and getattr(found_cam,prop) is None:
                         set_config_property(found_cam, prop, os.path.join(p, file))
                     else:

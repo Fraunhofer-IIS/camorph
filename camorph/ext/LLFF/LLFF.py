@@ -2,6 +2,7 @@ import copy
 
 import numpy as np
 import os
+import warnings
 from model.Camera import Camera
 from model.FileHandler import FileHandler
 from utils import math_utils
@@ -40,6 +41,8 @@ class LLFF(FileHandler):
 
     def write_file(self, camera_array: list[Camera], output_path: str, file_type=None):
         cams = self.coordinate_into(camera_array)
+        warnings.warn("LLFF relies on sorted image order. Cameras will be sorted after images when writing LLFF")
+        cams = sorted(cams, key=lambda x : (os.path.basename(x.source_image),x.source_image))
         data = []
         for c in cams:
             r = c.r.rotation_matrix.copy()
