@@ -128,7 +128,7 @@ def write_crucial_config_template(cams, path):
     """
     cp.write_crucial_config_template(cams, path)
 
-def visualize(cams):
+def visualize(cams, show=True):
     """
     Visualizes the list of :class:`model.Camera.Camera` with matplotlib
     See :mod:`vis.Visualizer`
@@ -136,7 +136,7 @@ def visualize(cams):
     :param cams: The list of :class:`model.Camera.Camera` to visualize
     :return: None
     """
-    vis.visualize(cams)
+    return vis.visualize(cams, show)
 
 def set_crucial_property_config(crucial_property_config: str):
     """
