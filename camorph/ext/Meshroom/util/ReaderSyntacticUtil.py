@@ -28,7 +28,11 @@ def read_sfm(input_path):
                 cam.t = np.asarray([float(x) for x in transform['center']])
                 rotmat = np.asarray([float(x) for x in transform['rotation']]).reshape((3,3))
                 cam.r = Quaternion(matrix = rotmat)
-                cam.focal_length_px = [float(intrinsic['pxFocalLength']),float(intrinsic['pxFocalLength'])]
+                if intrinsic.get('pxFocalLength') is not None:
+                    cam.focal_length_px = [float(intrinsic['pxFocalLength']),float(intrinsic['pxFocalLength'])]
+                elif intrinsic.get('focalLength') is not None:
+                    cam.focal_length_mm = [float(intrinsic['focalLength']),float(intrinsic['focalLength'])]
+
                 cam.projection_type = 'perspective'
                 cam.resolution = (float(view['width']), float(view['height']))
                 cam.principal_point = tuple([float(x) for x in intrinsic['principalPoint']])

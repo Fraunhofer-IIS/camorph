@@ -27,6 +27,11 @@ def build_file(cams: list[Camera]):
         intrinsic['serialNumber'] = str(-1)
         intrinsic['pxFocalLength'] = str(cam.focal_length_px[0])
         intrinsic['pxInitialFocalLength'] = str(cam.focal_length_px[0])
+        
+        # To also support newer Meshroom version
+        intrinsic['focalLength'] = str(cam.focal_length_mm[0])
+        intrinsic['initialFocalLength'] = str(cam.focal_length_mm[0])
+
         intrinsic['type'] = cam.model
         if cam.model == 'radial3' and cam.radial_distortion is not None:
             intrinsic['distortionParams'] = [str(item) for item in cam.radial_distortion]
