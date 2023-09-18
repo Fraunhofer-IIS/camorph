@@ -173,8 +173,8 @@ class NeRF(FileHandler):
             "p1": lambda x: try_get(x.tangential_distortion, 0, default=0.0),
             "p2": lambda x: try_get(x.tangential_distortion, 1, default=0.0),
             "p3": lambda x: try_get(x.tangential_distortion, 2, default=0.0),
-            "cx": lambda x: try_get(x.principal_point, 0, default=0.0),
-            "cy": lambda x: try_get(x.principal_point, 1, default=0.0),
+            "cx": lambda x: try_get(x.principal_point, 0, default=x.resolution[0]/2.0),
+            "cy": lambda x: try_get(x.principal_point, 1, default=x.resolution[1]/2.0),
             "w": lambda x: int(x.resolution[0]),
             "h": lambda x: int(x.resolution[1])
         }
@@ -199,8 +199,12 @@ class NeRF(FileHandler):
                 if not os.path.isdir(tmp_output_path):
                     tmp_output_path = os.path.split(output_path)[0]
 
-                source_image = os.path.relpath(source_image,tmp_output_path)
-
+                # Fallback to absolute path in case source images are on different mount
+                try:
+                    source_image = os.path.relpath(source_image,tmp_output_path)
+                except(ValueError):
+                    warnings.warn("Output path is on different mount as compared to the source images. Creating relative paths not possible, fallback to absolute paths!")
+                    
             json_cam = {
                 'intrinsics': {},
                 'file_path': source_image,

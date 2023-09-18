@@ -4,7 +4,7 @@ from json import JSONEncoder
 class sfm:
 
     def __init__(self):
-        self.version = ["1","0","0"]
+        self.version = ["1","2","4"] # Corresponds to Meshroom 2023.2.0
         self.feature_folders = [""]
         self.matchesFolders = [""]
         self.views = []
