@@ -65,7 +65,7 @@ def pip_check_properties(inst: FileHandler, cams: list[Camera], crucial_property
                         # cam.name is None and cant be iterated
                         found_cam = None
                     if found_cam is not None and hasattr(found_cam,prop) and getattr(found_cam,prop) is None:
-                        set_config_property(found_cam, prop, os.path.join(p, file))
+                        set_config_property(found_cam, prop, file)
                     else:
                         unmatched_files.append(file)
                 if len(unmatched_files) > 0:

@@ -11,7 +11,7 @@ from typing import Union
 import numpy as np
 import math
 from pyquaternion import Quaternion
-
+import warnings
 
 def euler_to_quaternion(vec, rot_order='xyz'):
     """This function converts a set of Euler angles to a quaternion.
@@ -287,6 +287,30 @@ def quaternion_to_rotation_matrix(q: Quaternion):
     :return: ndarray
     """
     return q.rotation_matrix
+
+def rotation_matrix_to_quaternion(R):
+    """This function converts a rotation matrix to a quaternion. Note that if the matrix is not perfectly orthogonal, it will try to repair the matrix
+    
+    :param R: ndarray
+    :return: PyQuaternion
+    """
+    v1 = R[0]
+    v2 = R[1]
+    # compute our own orthogonal vector with as much information as possible
+    if v1[2] != 0:
+        v2 = [v2[0], v2[1], (-v1[0] * v2[0] - v1[1] * v2[1]) / v1[2]]
+    elif v1[1] != 0:
+        v2 = [v2[0], (-v1[0] * v2[0] - v1[2] * v2[2]) / v1[1], v2[2]]
+    else:
+        v2 = [(-v1[1] * v2[1] - v1[2] * v2[2]) / v1[0], v2[1], v2[2]]
+    v1 = v1 / np.linalg.norm(v1)
+    v2 = v2 / np.linalg.norm(v2)
+    corrected = np.asarray([v1, v2, np.cross(v1, v2)])
+    error = np.sum(np.abs(R - corrected))
+    if error > 1e-5:
+        warnings.warn("Input Format did not supply a orthogonal matrix. The error between matrices is bigger than 1e-5. The matrix was corrected, but is possibly not usable.")
+    return Quaternion(matrix=corrected)
+
 
 def inch_to_mm(inch: float):
     """
