@@ -29,12 +29,16 @@ class LLFF(FileHandler):
         for c in data:
             cam = Camera()
             cam.focal_length_px = [c[14],c[14]]
-            cam.resolution = [c[4],c[9]]
+            cam.resolution = [c[9],c[4]]
             c_mat = c[:-2].reshape([3,5])[:,:-1]
             t = c_mat[:,-1]
             rm = c_mat[:,:-1]
+            s = [np.linalg.norm(rm[:,x]) for x in range(0,3)]
+            rm = np.asarray([[rm[0,0]/s[0],rm[0,1]/s[1],rm[0,2]/s[2]],
+                  [rm[1,0]/s[0],rm[1,1]/s[1],rm[1,2]/s[2]],
+                  [rm[2,0]/s[0],rm[2,1]/s[1],rm[2,2]/s[2]]])
             cam.t = t
-            cam.r = Quaternion(matrix=rm)
+            cam.r = math_utils.rotation_matrix_to_quaternion(rm)
             cam.near_far_bounds = [c[15],c[16]]
             cams.append(cam)
         return self.coordinate_from(cams)
@@ -47,7 +51,7 @@ class LLFF(FileHandler):
         for c in cams:
             r = c.r.rotation_matrix.copy()
             r = np.append(r,c.t[...,None],axis=1)
-            r = np.append(r,[[c.resolution[0]],[c.resolution[1]],[c.focal_length_px[0]]],axis=1)
+            r = np.append(r,[[c.resolution[1]],[c.resolution[0]],[c.focal_length_px[0]]],axis=1)
             r = np.append(r,c.near_far_bounds)
             data.append(r)
         data = np.asarray(data, dtype='float64')

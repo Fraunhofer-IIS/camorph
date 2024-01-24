@@ -14,16 +14,21 @@ from utils import math_utils
 import numpy as np
 
 
-def set_local(src, target, targettype=float):
+def set_local(src, target, cam, targettype=float):
     if type(src) is list:
-        for idx, x in enumerate(src):
-            if x is not None:
-                target[idx] = targettype(x)
+        if src is not None:
+            if getattr(cam, target) is None:
+                srcarr = [None for x in src]
+            else:
+                srcarr = getattr(cam,target)
+            
+            for idx, x in enumerate(src):
+                if x is not None:
+                    srcarr[idx] = x
+            setattr(cam,target,srcarr)
     else:
         if src is not None:
-            target = targettype(src)
-
-    return target
+            setattr(cam,target,targettype(src))
 
 
 def try_get(obj, key,obj_key=None, default=None):
@@ -57,37 +62,23 @@ class NeRF(FileHandler):
         camera_angle_y = try_get(nerf_json,'camera_angle_y')
         fl_x = try_get(nerf_json, 'fl_x')
         fl_y = try_get(nerf_json, 'fl_y')
-        radial_distorion = [try_get(nerf_json, 'k1'), try_get(nerf_json, 'k2')]
+        radial_distorion = [try_get(nerf_json, 'k1'), try_get(nerf_json, 'k2'), try_get(nerf_json, 'k3'), try_get(nerf_json, 'k4')]
         tangential_distorion = [try_get(nerf_json, 'p1'), try_get(nerf_json, 'p2')]
         principal_point = [try_get(nerf_json, 'cx'), try_get(nerf_json, 'cy')]
         resolution = [try_get(nerf_json, 'w'), try_get(nerf_json, 'h')]
         cams = []
         for c in nerf_json['frames']:
             local_fl = [try_get(c, 'fl_x', 'intrinsics'),try_get(c, 'fl_y', 'intrinsics')]
-            local_radial_distortion = [try_get(c, 'k1', 'intrinsics'), try_get(c, 'k2', 'intrinsics')]
+            local_radial_distortion = [try_get(c, 'k1', 'intrinsics'), try_get(c, 'k2', 'intrinsics'), try_get(c, 'k3', 'intrinsics'), try_get(c, 'k4', 'intrinsics')]
             local_tangential_distortion = [try_get(c, 'p1', 'intrinsics'), try_get(c, 'p2', 'intrinsics')]
             local_principal_point = [try_get(c, 'cx', 'intrinsics'), try_get(c, 'cy', 'intrinsics')]
             local_resolution = [try_get(c, 'w', 'intrinsics'), try_get(c, 'h', 'intrinsics')]
+            local_camera_angle = [try_get(nerf_json,'camera_angle_x'),try_get(nerf_json,'camera_angle_y')]
             cam = Camera()
             transmat = np.asarray(c['transform_matrix'])
             cam.t = transmat[:, -1][:-1]
-            # NeRF rotations are not precise enough for our quaternions
-            # therefore we need to construct a pure orthogonal matrix
-            warnings.warn("NeRF did not supply a perfect orthogonal matrix")
             rotmat = transmat[:-1, :-1]
-            v1 = rotmat[0]
-            v2 = rotmat[1]
-            # compute our own orthogonal vector with as much information as possible
-            if v1[2] != 0:
-                v2 = [v2[0], v2[1], (-v1[0] * v2[0] - v1[1] * v2[1]) / v1[2]]
-            elif v1[1] != 0:
-                v2 = [v2[0], (-v1[0] * v2[0] - v1[2] * v2[2]) / v1[1], v2[2]]
-            else:
-                v2 = [(-v1[1] * v2[1] - v1[2] * v2[2]) / v1[0], v2[1], v2[2]]
-            v1 = v1 / np.linalg.norm(v1)
-            v2 = v2 / np.linalg.norm(v2)
-            corrected = np.asarray([v1, v2, np.cross(v1, v2)])
-            cam.r = Quaternion(matrix=corrected)
+            cam.r = math_utils.rotation_matrix_to_quaternion(rotmat)
             dirname = os.path.dirname(c['file_path'])
             if not os.path.isabs(dirname):
                 curdir = os.getcwd()
@@ -95,18 +86,22 @@ class NeRF(FileHandler):
                 dirname = os.path.abspath(dirname)
                 os.chdir(curdir)
 
-            if None not in radial_distorion:
-                cam.radial_distortion = [float(x) for x in radial_distorion]
-                cam.model = 'brown'
-            set_local(local_radial_distortion, cam.radial_distortion)
-            if None not in tangential_distorion:
-                cam.tangential_distortion = [float(x) for x in tangential_distorion]
-                cam.model = 'brown'
-            set_local(local_tangential_distortion, cam.tangential_distortion)
+
+            cam.radial_distortion = [float(x) if x is not None else x for x in radial_distorion]
+            set_local(local_radial_distortion, "radial_distortion", cam)
+
+            cam.tangential_distortion = [float(x) if x is not None else x for x in tangential_distorion]
+            set_local(local_tangential_distortion, "tangential_distortion", cam)
+
+            cam.radial_distortion = [x for x in cam.radial_distortion if x is not None]
+            cam.tangential_distortion = [x for x in cam.tangential_distortion if x is not None]
+
+            if len(cam.radial_distortion) > 0 or len(cam.tangential_distortion) > 0:
+                cam.model='brown'
 
             if None not in principal_point:
                 cam.principal_point = [float(x) for x in principal_point]
-            set_local(local_principal_point, cam.principal_point)
+            set_local(local_principal_point, "principal_point", cam)
 
             bname = os.path.basename(c['file_path'])
             if 'posetrace' in kwargs and kwargs['posetrace'] is True:
@@ -117,38 +112,37 @@ class NeRF(FileHandler):
                 img = next(filter(lambda o: fnmatch.fnmatch(o, bname + ".*[!xmp]"), os.listdir(dirname)),None)
             cam.name = bname
 
-            warningstring = f"Image {c['file_path']} does not exist, cannot set parameter(s): "
-            imexists = True
-
             if img is not None:
                 cam.source_image = os.path.join(dirname, img)
             else:
-                should_warn = False
                 warningstring += 'source_image'
 
             if None not in resolution:
                 cam.resolution = resolution
-            elif imexists:
+            else:
                 with Image.open(cam.source_image) as i:
                     cam.resolution = i.size
-            else:
-                warningstring += ' resolution'
 
-            set_local(local_resolution, cam.resolution, int)
+            set_local(local_resolution, "resolution", cam, int)
 
             if fl_x is not None:
-                cam.focal_length_px = [fl_x,fl_y]
+                if fl_y is not None:
+                    cam.focal_length_px = [fl_x,fl_y]
+                else:
+                    cam.focal_length_px = [fl_x,fl_x]
+            set_local(local_fl, "focal_length_px", cam)
 
-            elif imexists:
+            if None in cam.focal_length_px:
+                if camera_angle_x is None:
+                    camera_angle_x = local_camera_angle[0]
+                if camera_angle_y is None:
+                    camera_angle_y = local_camera_angle[1]
                 if camera_angle_y is None:
                     cam.focal_length_px = [.5 * cam.resolution[0] / np.tan(.5 * camera_angle_x),
                                             .5 * cam.resolution[0] / np.tan(.5 * camera_angle_x)]
                 else:
                     cam.focal_length_px = [.5 * cam.resolution[0] / np.tan(.5 * camera_angle_x),
                                             .5 * cam.resolution[1] / np.tan(.5 * camera_angle_y)]
-            else:
-                warningstring += ' focal_length'
-            cam.focal_length_px = set_local(local_fl, cam.focal_length_px)
 
             if cam.resolution is not None:
                 if cam.resolution[0] > cam.resolution[1]:
