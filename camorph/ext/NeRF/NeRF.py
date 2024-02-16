@@ -74,6 +74,8 @@ class NeRF(FileHandler):
             local_principal_point = [try_get(c, 'cx', 'intrinsics'), try_get(c, 'cy', 'intrinsics')]
             local_resolution = [try_get(c, 'w', 'intrinsics'), try_get(c, 'h', 'intrinsics')]
             local_camera_angle = [try_get(nerf_json,'camera_angle_x'),try_get(nerf_json,'camera_angle_y')]
+            exif = try_get(c, 'exif')
+            mask = try_get(c, 'mask_path')
             cam = Camera()
             transmat = np.asarray(c['transform_matrix'])
             cam.t = transmat[:, -1][:-1]
@@ -115,7 +117,8 @@ class NeRF(FileHandler):
             if img is not None:
                 cam.source_image = os.path.join(dirname, img)
             else:
-                warningstring += 'source_image'
+                warnings.warn("Source image could not be read, file checks cannot be performed")
+                cam.source_image = c['file_path']
 
             if None not in resolution:
                 cam.resolution = resolution
@@ -149,6 +152,10 @@ class NeRF(FileHandler):
                     cam.sensor_size = (36, (36 / cam.resolution[0]) * cam.resolution[1])
                 else:
                     cam.sensor_size = ((36 / cam.resolution[1]) * cam.resolution[0], 36)
+
+            cam.exif = exif
+
+            cam.mask = mask
             cams.append(cam)
 
         return self.coordinate_from(cams)
@@ -205,6 +212,10 @@ class NeRF(FileHandler):
                 'rotation': 0,
                 'transform_matrix': trans_mat.tolist()
             }
+            if cam.exif is not None:
+                json_cam['exif'] = cam.exif
+            if cam.mask is not None:
+                json_cam['mask'] = cam.mask
             json_file['frames'].append(json_cam)
 
         # Write individual intrinsics
