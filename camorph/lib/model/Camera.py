@@ -1,6 +1,6 @@
 import inspect
 import math
-from typing import Union
+from typing import Union, Optional
 
 import numpy as np
 from numpy import ndarray
@@ -28,17 +28,17 @@ class Camera():
 
 
 
-        self.r: Union[Quaternion, None] = None
+        self.r: Optional[Quaternion] = None
         """Rotation
         
         `Type`: Quaternion"""
 
-        self.t: Union[ndarray, None] = None
+        self.t: Optional[ndarray] = None
         """Translation 
         
         `Type`: ndarray"""
 
-        self.name: Union[str, None] = None
+        self.name: Optional[str] = None
         """A unique name
         
         `Type`: str"""
@@ -48,12 +48,12 @@ class Camera():
         
         `Type`: bool"""
 
-        self.focal_length_px: Union[list[float], None] = None
+        self.focal_length_px: Optional[list[float]] = None
         """Focal length in pixels
         
         `Type`: float"""
 
-        self.focal_length_mm: Union[list[float], None] = None
+        self.focal_length_mm: Optional[list[float]] = None
         """Focal length in millimeters
         
         `Type`: float"""
@@ -73,7 +73,7 @@ class Camera():
 
         `Type`: (float,float)"""
 
-        self.projection_type: Union[str, None] = 'perspective'
+        self.projection_type: Optional[str] = 'perspective'
         """Projection type, either `perspective`, `orthogonal` or `equirectangular`
 
         `Type`: str"""
@@ -88,27 +88,37 @@ class Camera():
 
         `Type`: (float,float)"""
 
-        self.model: Union[str, None] = 'pinhole'
+        self.model: Optional[str] = 'pinhole'
         """Camera model. One of the following: `pinhole`, `opencv_fisheye`, `orthographic`, `brown`
 
         `Type`: str"""
 
-        self.radial_distortion: Union[list[float], None] = None
+        self.radial_distortion: Optional[list[float]] = None
         """Radial distortion coefficients
 
         `Type`: list[float]"""
 
-        self.tangential_distortion: Union[list[float], None] = None
+        self.tangential_distortion: Optional[list[float]] = None
         """Tangential distortion coefficients
 
         `Type`: list[float]"""
 
-        self.source_image: Union[str, None] = None
+        self.source_image: Optional[str] = None
         """Path to a source image
 
         `Type`: str"""
 
-        self.near_far_bounds: Union[list,None] = None
+        self.mask: Optional[str] = None
+        """Path to a mask
+        
+        `Type`: str"""
+
+        self.exif: Optional[dict] = None
+        """Exif information of the camera
+        
+        `Type`: dict"""
+
+        self.near_far_bounds: Optional[list] = None
         """Near and far camera bounds
         
         `Type`: list[float]
