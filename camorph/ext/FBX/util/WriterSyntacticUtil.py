@@ -4,8 +4,8 @@ import random
 
 from pyquaternion import Quaternion
 
-from model.Camera import Camera
-from utils import bin_writer_utils as bfw, math_utils as mu, math_utils, file_utils
+from camorph.lib.model.Camera import Camera
+from camorph.lib.utils import bin_writer_utils as bfw, math_utils as mu, math_utils, file_utils
 
 primitive_types = {
     'Y': lambda i: bfw.get_int16(i),

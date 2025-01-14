@@ -6,8 +6,8 @@ from os.path import basename
 import numpy as np
 from pyquaternion import Quaternion
 
-from model.Camera import Camera
-from utils import math_utils
+from camorph.lib.model.Camera import Camera
+from camorph.lib.utils import math_utils
 
 
 

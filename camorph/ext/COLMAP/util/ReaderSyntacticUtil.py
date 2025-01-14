@@ -2,7 +2,7 @@ from pyquaternion import Quaternion
 import numpy as np
 import struct
 
-from utils.file_utils import extension
+from camorph.lib.utils.file_utils import extension
 from ..model import *
 from ..model.CameraModel import CameraModel, CAMERA_MODEL_IDS
 

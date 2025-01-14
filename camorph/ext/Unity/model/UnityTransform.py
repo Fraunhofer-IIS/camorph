@@ -2,7 +2,7 @@ import yaml
 from numpy.core.records import ndarray
 from pyquaternion import Quaternion
 
-from utils import math_utils
+from camorph.lib.utils import math_utils
 
 
 class UnityTransform(yaml.YAMLObject):

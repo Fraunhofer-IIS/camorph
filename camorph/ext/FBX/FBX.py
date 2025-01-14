@@ -4,15 +4,15 @@ import warnings
 import numpy as np
 import re
 
-from model.FileHandler import FileHandler
-from model.Camera import Camera
+from camorph.lib.model.FileHandler import FileHandler
+from camorph.lib.model.Camera import Camera
 from .model import *
 from .util import ReaderSemanticUtil
 from .util import ReaderSyntacticUtil
 from .util import WriterSyntacticUtil
-from utils import math_utils
-from utils import bin_reader_utils
-from utils import file_utils
+from camorph.lib.utils import math_utils
+from camorph.lib.utils import bin_reader_utils
+from camorph.lib.utils import file_utils
 
 
 class FBX(FileHandler):

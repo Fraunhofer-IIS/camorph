@@ -8,9 +8,9 @@ import warnings
 from PIL import Image
 from pyquaternion import Quaternion
 
-from model.Camera import Camera
-from model.FileHandler import FileHandler
-from utils import math_utils
+from camorph.lib.model.Camera import Camera
+from camorph.lib.model.FileHandler import FileHandler
+from camorph.lib.utils import math_utils
 import numpy as np
 
 
@@ -121,7 +121,7 @@ class NeRF(FileHandler):
                 cam.source_image = c['file_path']
 
             if None not in resolution:
-                cam.resolution = resolution
+                cam.resolution = [resolution[0], resolution[1]] # To avoid shallow copy issues
             else:
                 with Image.open(cam.source_image) as i:
                     cam.resolution = i.size

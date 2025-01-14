@@ -7,7 +7,7 @@ import numpy as np
 from ..model.UnityCamera import UnityCamera
 from ..model.UnityGameObject import UnityGameObject
 from ..model.UnityTransform import UnityTransform
-from model.Camera import Camera
+from camorph.lib.model.Camera import Camera
 
 
 def build_file(cam_array: list[Camera]):

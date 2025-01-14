@@ -2,7 +2,7 @@ import json
 import random
 
 from ..model.sfm import sfm, sfm_view, sfm_transform, sfm_pose, sfm_intrinsics
-from model.Camera import Camera
+from camorph.lib.model.Camera import Camera
 
 
 def build_file(cams: list[Camera]):

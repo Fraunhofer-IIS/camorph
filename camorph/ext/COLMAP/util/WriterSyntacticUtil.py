@@ -1,9 +1,9 @@
 import os
 
-from model.Camera import Camera
-from utils import math_utils
-from utils.file_utils import fixed_list
-from utils import bin_writer_utils as bfw
+from camorph.lib.model.Camera import Camera
+from camorph.lib.utils import math_utils
+from camorph.lib.utils.file_utils import fixed_list
+from camorph.lib.utils import bin_writer_utils as bfw
 
 
 def write_cameras_file_txt(camera_array: list[Camera], output_path):
@@ -143,12 +143,12 @@ def _get_model_and_params(cam, file_type, func):
             params = [func(cam.focal_length_px[0]), func(cam.focal_length_px[1]), func(cam.principal_point[0]), func(cam.principal_point[1])]
             params.append(func(cam.radial_distortion[0]))
             params.append(func(cam.radial_distortion[1]))
-            params.append(func(cam.tangential_distortion[0]) if cam.tangential_distortion is not None else "0")
-            params.append(func(cam.tangential_distortion[1]) if cam.tangential_distortion is not None and len(cam.tangential_distortion) > 1 else "0")
-            params.append(func(cam.radial_distortion[2]) if len(cam.radial_distortion) > 2 else "0")
-            params.append(func(cam.radial_distortion[3]) if len(cam.radial_distortion) > 3 else "0")
-            params.append(func(cam.radial_distortion[4]) if len(cam.radial_distortion) > 4 else "0")
-            params.append(func(cam.radial_distortion[5]) if len(cam.radial_distortion) > 5 else "0")
+            params.append(func(cam.tangential_distortion[0]) if cam.tangential_distortion is not None else "0" if camtype == "FULL_OPENCV" else func(0.0))
+            params.append(func(cam.tangential_distortion[1]) if cam.tangential_distortion is not None and len(cam.tangential_distortion) > 1 else "0" if camtype == "FULL_OPENCV" else func(0.0))
+            params.append(func(cam.radial_distortion[2]) if len(cam.radial_distortion) > 2 else "0" if camtype == "FULL_OPENCV" else func(0.0))
+            params.append(func(cam.radial_distortion[3]) if len(cam.radial_distortion) > 3 else "0" if camtype == "FULL_OPENCV" else func(0.0))
+            params.append(func(cam.radial_distortion[4]) if len(cam.radial_distortion) > 4 else "0" if camtype == "FULL_OPENCV" else func(0.0))
+            params.append(func(cam.radial_distortion[5]) if len(cam.radial_distortion) > 5 else "0" if camtype == "FULL_OPENCV" else func(0.0))
         else:
             raise Exception(f"Unsupported Camera Model")
     elif cam.model == 'opencv_fisheye':

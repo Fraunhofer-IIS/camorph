@@ -5,11 +5,11 @@ import copy
 
 from numpy import ndarray
 
-import utils.math_utils as math_utils
-from model.Camera import Camera
-from utils.file_utils import get_files_in_dir
+import camorph.lib.utils.math_utils as math_utils
+from camorph.lib.model.Camera import Camera
+from camorph.lib.utils.file_utils import get_files_in_dir
 
-from model.FileHandler import FileHandler
+from camorph.lib.model.FileHandler import FileHandler
 from .util import ReaderSyntacticUtil as rsu, WriterSyntacticUtil
 
 

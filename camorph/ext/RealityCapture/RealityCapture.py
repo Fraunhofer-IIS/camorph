@@ -9,10 +9,10 @@ import rdflib
 from PIL import Image
 from pyquaternion import Quaternion
 
-from utils import math_utils, file_utils
-from utils.file_utils import get_files_in_dir
-from model.FileHandler import FileHandler
-from model.Camera import Camera
+from camorph.lib.utils import math_utils, file_utils
+from camorph.lib.utils.file_utils import get_files_in_dir
+from camorph.lib.model.FileHandler import FileHandler
+from camorph.lib.model.Camera import Camera
 
 
 class RealityCapture(FileHandler):
