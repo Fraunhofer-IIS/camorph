@@ -6,8 +6,8 @@ from os.path import isdir, dirname, isfile, basename
 
 import numpy as np
 
-from model import Camera
-from model.FileHandler import FileHandler
+from camorph.lib.model import Camera
+from camorph.lib.model.FileHandler import FileHandler
 
 """
 This module is used to check if the crucial properties of a destination FileHandler have been set

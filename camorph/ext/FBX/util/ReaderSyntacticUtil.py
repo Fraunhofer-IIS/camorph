@@ -3,8 +3,8 @@ import sys
 sys.path.append('<project directory>')
 sys.path.append("../..")  # Adds higher directory to python modules path.
 
-import utils.bin_reader_utils as BinaryFileUtils
-import utils.file_utils as FileUtils
+import camorph.lib.utils.bin_reader_utils as BinaryFileUtils
+import camorph.lib.utils.file_utils as FileUtils
 from ..model import *
 
 primitive_type_size = {

@@ -2,7 +2,7 @@ import sys
 
 from pyquaternion import Quaternion
 
-import utils.math_utils as math_utils
+import camorph.lib.utils.math_utils as math_utils
 
 sys.path.append('<project directory>')
 sys.path.append("../..")  # Adds higher directory to python modules path.

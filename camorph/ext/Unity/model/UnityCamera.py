@@ -1,5 +1,4 @@
 import yaml
-import numpy as np
 
 class UnityCamera(yaml.YAMLObject):
     yaml_tag = '!u!20'

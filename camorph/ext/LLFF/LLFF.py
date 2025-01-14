@@ -3,9 +3,9 @@ import copy
 import numpy as np
 import os
 import warnings
-from model.Camera import Camera
-from model.FileHandler import FileHandler
-from utils import math_utils
+from camorph.lib.model.Camera import Camera
+from camorph.lib.model.FileHandler import FileHandler
+from camorph.lib.utils import math_utils
 from pyquaternion import Quaternion
 
 

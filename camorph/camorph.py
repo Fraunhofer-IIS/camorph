@@ -6,11 +6,12 @@ import os
 import sys
 import PIL.Image
 import copy
+from pathlib import Path
 
 import camorph
 import lib.crucial_property as cp
-from model import Camera
-import visualizer as vis
+from camorph.lib.model import Camera
+import camorph.lib.visualizer as vis
 
 
 
@@ -109,7 +110,10 @@ def write_cameras(format, path, cams, crop=None, scale=None, imdir=None, check_i
     if check_images:
         print('checking images...')
         for cam in cams:
-            im = PIL.Image.open(cam.source_image)
+            if os.path.isabs(cam.source_image):
+                im = PIL.Image.open(cam.source_image)
+            else:
+                im = PIL.Image.open(os.path.join(Path(path).parent,cam.source_image))
             if not (im.height == cam.resolution[0] and im.width == cam.resolution[1]) and not (im.height == cam.resolution[1] and im.width == cam.resolution[0]):
                 raise ValueError(f"Resolution of image and intrinsics does not match: image {im.height}x{im.width}, intrinsic {cam.resolution[0]}x{cam.resolution[1]}")
 

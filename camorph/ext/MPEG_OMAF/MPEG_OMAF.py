@@ -4,9 +4,9 @@ import csv
 import copy
 import numpy as np
 
-from model.FileHandler import FileHandler
-from model.Camera import Camera
-from utils import math_utils
+from camorph.lib.model.FileHandler import FileHandler
+from camorph.lib.model.Camera import Camera
+from camorph.lib.utils import math_utils
 
 
 class MPEG_OMAF(FileHandler):

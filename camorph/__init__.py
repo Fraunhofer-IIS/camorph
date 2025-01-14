@@ -6,9 +6,7 @@ import pathlib
 
 basepath = pathlib.Path(__file__).parent.resolve()
 extpath = os.path.join(basepath, 'ext')
-libpath = os.path.join(basepath, 'lib')
 sys.path.append(extpath)
-sys.path.append(libpath)
 sys.path.append(str(basepath))
 crucial_property_config = None
 imported_instances = {}

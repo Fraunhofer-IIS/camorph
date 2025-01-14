@@ -9,6 +9,12 @@
 
 This is the gitlab project for camorph, a camera parameter converting tool written in python 3.9.
 
+## Release Notes
+### v0.3.5 (September 2, 2024)
+* Fixed an issue with FULL_OPENCV models when writing binary COLMAP files
+### v0.3.4 (June 20, 2024)
+* Fixed an issue with shallow copying in the read_file() for NeRF when using individual image resolutions
+
 ## Documentation
 
 Documentation can be found [here](docs/index.md).
