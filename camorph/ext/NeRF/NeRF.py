@@ -101,10 +101,6 @@ class NeRF(FileHandler):
             if len(cam.radial_distortion) > 0 or len(cam.tangential_distortion) > 0:
                 cam.model='brown'
 
-            if None not in principal_point:
-                cam.principal_point = [float(x) for x in principal_point]
-            set_local(local_principal_point, "principal_point", cam)
-
             bname = os.path.basename(c['file_path'])
             if 'posetrace' in kwargs and kwargs['posetrace'] is True:
                 img = bname
@@ -127,6 +123,14 @@ class NeRF(FileHandler):
                     cam.resolution = i.size
 
             set_local(local_resolution, "resolution", cam, int)
+
+            if None not in principal_point:
+                cam.principal_point = [float(x) for x in principal_point]
+            if None not in local_principal_point:
+                set_local(local_principal_point, "principal_point", cam)
+            if cam.principal_point is None:
+                principal_point_from_resolution = [side_length / 2 for side_length in cam.resolution]
+                set_local(principal_point_from_resolution, "principal_point", cam)
 
             if fl_x is not None:
                 if fl_y is not None:
