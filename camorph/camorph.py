@@ -9,9 +9,9 @@ import copy
 from pathlib import Path
 
 import camorph
-import lib.crucial_property as cp
+import camorph.lib.crucial_property as cp
 from camorph.lib.model import Camera
-import camorph.lib.visualizer as vis
+from camorph.lib import visualizer as vis
 
 
 

@@ -5,6 +5,7 @@ from os.path import basename
 
 import numpy as np
 from pyquaternion import Quaternion
+from distutils.version import StrictVersion
 
 from camorph.lib.model.Camera import Camera
 from camorph.lib.utils import math_utils
@@ -35,7 +36,10 @@ def read_sfm(input_path):
 
                 cam.projection_type = 'perspective'
                 cam.resolution = (float(view['width']), float(view['height']))
-                cam.principal_point = tuple([float(x) for x in intrinsic['principalPoint']])
+                if StrictVersion('.'.join(sfm_json['version'])) > StrictVersion('1.2.0'):
+                    cam.principal_point = np.add(tuple([float(x) for x in intrinsic['principalPoint']]),np.multiply(cam.resolution,0.5))
+                else:
+                    cam.principal_point = tuple([float(x) for x in intrinsic['principalPoint']])
                 cam.sensor_size = (float(intrinsic['sensorWidth']), float(intrinsic['sensorHeight']))
                 cam.model = intrinsic['type']
                 if 'distortionParams' in intrinsic:
