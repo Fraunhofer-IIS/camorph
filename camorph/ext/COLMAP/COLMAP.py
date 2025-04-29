@@ -124,6 +124,8 @@ class COLMAP(FileHandler):
             else:
                 images_dir = os.path.join(os.path.dirname(os.path.dirname(input_path_images)), 'images')
                 if not os.path.isdir(images_dir):
+                    images_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(input_path_images))), 'images')
+                if not os.path.isdir(images_dir):
                     warnings.warn(
                         'Camorph could not locate the COLMAP images folder. When writing, make sure to supply a config.json')
                 else:
