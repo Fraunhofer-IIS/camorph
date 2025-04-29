@@ -1,7 +1,7 @@
 import sys
 
-sys.path.append('<project directory>')
-sys.path.append("../..")  # Adds higher directory to python modules path.
+# sys.path.append('<project directory>')
+# sys.path.append("../..")  # Adds higher directory to python modules path.
 
 import camorph.lib.utils.bin_reader_utils as BinaryFileUtils
 import camorph.lib.utils.file_utils as FileUtils

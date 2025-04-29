@@ -4,8 +4,8 @@ from pyquaternion import Quaternion
 
 import camorph.lib.utils.math_utils as math_utils
 
-sys.path.append('<project directory>')
-sys.path.append("../..")  # Adds higher directory to python modules path.
+# sys.path.append('<project directory>')
+# sys.path.append("../..")  # Adds higher directory to python modules path.
 
 import numpy as np
 from ..model import *
