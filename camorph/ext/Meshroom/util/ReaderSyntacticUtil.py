@@ -40,7 +40,11 @@ def read_sfm(input_path):
                     cam.principal_point = np.add(tuple([float(x) for x in intrinsic['principalPoint']]),np.multiply(cam.resolution,0.5))
                 else:
                     cam.principal_point = tuple([float(x) for x in intrinsic['principalPoint']])
-                cam.sensor_size = (float(intrinsic['sensorWidth']), float(intrinsic['sensorHeight']))
+                # Unfortunately, Meshroom sensor size cannot be trusted
+                # Calculating based on image aspect ratio
+                sensor_size_x = 36.0
+                cam.sensor_size = (sensor_size_x, sensor_size_x * (cam.resolution[1]/cam.resolution[0]))
+                # cam.sensor_size = (float(intrinsic['sensorWidth']), float(intrinsic['sensorHeight']))
                 cam.model = intrinsic['type']
                 if 'distortionParams' in intrinsic:
                     cam.model = 'brown'

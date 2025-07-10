@@ -10,6 +10,12 @@
 This is the gitlab project for camorph, a camera parameter converting tool written in python 3.9.
 
 ## Release Notes
+### v1.0.0 (July 10, 2025)
+* Clarified the meaning of the "MPEG-OMAF" format in the README
+
+### v0.3.6 (April 29, 2025)
+* Merged PR regarding COLMAP image path fix
+* Merged PR regarding NeRF principal point fix
 ### v0.3.5 (September 2, 2024)
 * Fixed an issue with FULL_OPENCV models when writing binary COLMAP files
 ### v0.3.4 (June 20, 2024)
@@ -134,8 +140,8 @@ This option crops and scales the **attributes of images in the file**. For examp
 - Game Engines
    - **Unity** (Key: "unity")
 
-- Virtual Reality
-   - **MPEG OMAF** (Key: "mpeg_omaf")
+- Virtual Reality / Immersive Video
+   - **MPEG-OMAF** (Key: "mpeg_omaf") -> This format is the JSON format used in the software packages RVS (https://gitlab.com/mpeg-i-visual/rvs) and TMIV (https://gitlab.com/mpeg-i-visual/tmiv) which rely on the MPEG-OMAF coordinate system; for short, we called it MPEG-OMAF.
 
 - Machine Learning
    - **NeRF** (Key: "nerf")
